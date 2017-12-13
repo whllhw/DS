@@ -333,7 +333,7 @@ function draw(){
     //画图代码：
     for (var i=0;i<links.length;i++)
     {
-        if(links[i].Is_Crutical_Path=="1")
+        if(links[i].Is_Critcal_Path==1)
         {
             g.setEdge(links[i].head,links[i].tail,{label:"dur:"+links[i].duration,style: "stroke: #f66; stroke-width: 3px;",labelStyle: "font-style: italic; text-decoration: underline;"});
             //g.setEdge(links[i].head,links[i].tail,{label:"duration:"+links[i].duration+"\n"+links[i].name+"\n"+links[i].note+"\n"+"\n"+links[i].ES+"|"+links[i].LS,style:"stroke: #f66; stroke-width: 3px; stroke-dasharray: 5, 5;", arrowheadStyle: "fill: #f66" });
