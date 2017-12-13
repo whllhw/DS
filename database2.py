@@ -141,6 +141,7 @@ def LetGo():
     Datas1 = Get_Data2Cal('-1')
     check=Invalid(Datas1)
     if check:
+        return check
         pass
     else:
         Data_Re=Cal(Datas1)
