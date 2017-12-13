@@ -53,12 +53,11 @@ def Get_Data2Cal(Cal_id='-1'):
     Cal_id2=str(Cal_id)
 
     cur.execute('Select head,tail,duration From edges '
-                'where Cal_ID=?',[Cal_id2])
+                )
 
     Links=cur.fetchall()
 
-    cur.execute('Select name From nodes '
-                'where Cal_ID=?',[Cal_id2]
+    cur.execute('Select uid From nodes '
                 )
     Nodes=cur.fetchall()
 
@@ -66,16 +65,6 @@ def Get_Data2Cal(Cal_id='-1'):
 
     return Datas
 
-def Put_Result2DB(Datas):
-    cur.executemany('Insert Into nodes2(id,name,note,ES,LS)'
-                    'Values(?,?,?,?,?)',
-                    Datas['Nodes']
-                    )
-    cur.executemany('Insert Into edges2(id,head,tail,duration,note,name,ES,LS,TF,Is_Critcal_Path,EF,LF,FF)'
-                    'Values(?,?,?,?,?,?,?,?,?,?,?,?,?)',
-                    Datas['Links']
-                    )
-    pass
 
 def Cal(Datas1):
     Links1 = Datas1['Links']
@@ -151,33 +140,38 @@ def LetGo():
         G_Cal_ID=G_Cal_ID+1
 
 #从输入表抽取信息
-#准备工作
-    cur.execute('Update nodes Set Cal_ID=?'
-                'Where Cal_ID=?', [G_Cal_ID,-1])
-    db_connect.commit()
-
-    cur.execute('Update edges Set Cal_ID=?'
-                'Where Cal_ID=?', [G_Cal_ID,-1])
-    db_connect.commit()
+##准备工作
+#    cur.execute('Update nodes Set Cal_ID=?'
+#                )
+#    db_connect.commit()
+#
+#    cur.execute('Update edges Set Cal_ID=?'
+#                )
+#    db_connect.commit()
 
 #从输入表拷贝信息
 # 点
     cur.execute('Select id,uid,name,note,Cal_ID From nodes '
-                'where Cal_ID=?',[G_Cal_ID])
+                )
 
     N1=cur.fetchall()
-    cur.executemany('Insert Into nodes2(id,uid,name,note,Cal_ID)'
-                'Values (?,?,?,?,?)',N1)
+    try:
+        cur.executemany('Insert Into nodes2(id,uid,name,note,Cal_ID)'
+                    'Values (?,?,?,?,?)',N1)
+    except:
+        pass
     db_connect.commit()
-
 
 #边
     cur.execute('Select id,uid,head,tail,duration,note,name,Cal_ID From edges '
-                'where Cal_ID=?', [G_Cal_ID])
+                )
 
     L1=cur.fetchall()
-    cur.executemany('Insert Into edges2(id,uid,head,tail,duration,note,name,Cal_ID)'
-                'Values (?,?,?,?,?,?,?,?)',L1)
+    try:
+        cur.executemany('Insert Into edges2(id,uid,head,tail,duration,note,name,Cal_ID)'
+                    'Values (?,?,?,?,?,?,?,?)',L1)
+    except:
+        pass
     db_connect.commit()
 
 #录入计算信息
@@ -204,7 +198,8 @@ def LetGo():
 
 
     cur.executemany('Update nodes2 Set ES=?,LS=?'
-                'Where id=?',Up_Nodes.tolist())
+                'Where cast(uid as float)=?',Up_Nodes.tolist())
+    #类型转换很重要，这里如果不用cast转换一下类型，是无法更新数据的
 
     db_connect.commit()
 
