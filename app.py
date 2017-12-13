@@ -190,7 +190,7 @@ def removeEdge(id):
 @app.route('/api/result')
 def getResult():
     import database2
-    database2.LetGo()
+    message=database2.LetGo()
 
     temp = []
     try:
