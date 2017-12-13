@@ -1,0 +1,41 @@
+.Logo-1{
+    background-image: url(../Source/Logo.jpg);
+    width: 50px;
+    background-size: 80%;
+    background-repeat:no-repeat;
+    background-position: center center;
+}
+
+.My_Active{
+    background-color: #e78835 ;
+}
+
+.My_Canvas{
+    width: 100%;
+    height: 1000px;
+    background: white;
+}
+
+.side-bar-card{
+    background: rgba(0,0,0,0.05);
+    margin-top: 15px;
+    padding: 20px 0;
+}
+
+.side-bar-card .card-title,
+.side-bar-card .card-body .list .item{
+    padding: 10px 15px;
+}
+
+.footer{
+    margin-top: 20px;
+    padding: 50px 0;
+    text-align: center;
+    color: #999;
+}
+
+.My_Svg{
+    width: 100%;
+    height: 1000px;
+    background: white;
+}

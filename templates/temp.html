@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Django-DRF Demo</title>
+    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.dataTables.css') }}" type="text/css"/>
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+        <h1>Django-DRF Demo</h1>
+        <p>dataTable Example (server-side)</p>
+    </div>
+
+    <!-- New  button -->
+    <div class="text-center">
+        <button type="button" data-dismiss="modal" class="btn btn-primary" id="new_2">New</button>
+    </div>
+
+    <!-- datatables -->
+
+    <table id="datatables2" class="table table-hover">
+        <thead>
+            <tr>
+                <th>编号</th>
+                <th>起始</th>
+                <th>结束</th>
+                <th>耗时</th>
+                <th>名称</th>
+                <th>备注</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    </table>
+
+    <!-- NEW and EDIT Modal -->
+    <div class="modal fade" id="myModal_2" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal_title"></h4>
+                </div>
+                <div class="modal-body">
+                    <form role="form" id="edgeForm">
+                        <input type="hidden" id="id" name="id" value="">
+                        <div class="form-group">
+
+                            <label for="head"><span class="glyphicon glyphicon-pencil"></span> 前驱 </label>
+                            <input type="text" class="form-control" id="head" name="head" placeholder="Enter head"
+                                   required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="tail"><span class="glyphicon glyphicon-file"></span> 后继 </label>
+                            <input type="text" class="form-control" id="tail" name="tail"
+                                   placeholder="Enter tail" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="duration"><span class="glyphicon glyphicon-file"></span> 持续时间 </label>
+                            <input type="text" class="form-control" id="duration" name="duration"
+                                   placeholder="Enter duration" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="name"><span class="glyphicon glyphicon-file"></span> 名称 </label>
+                            <input type="text" class="form-control" id="name" name="name"
+                                   placeholder="Enter name" required="true">
+                        </div>
+                        <div class="form-group">
+                            <label for="note"><span class="glyphicon glyphicon-file"></span> 备注 </label>
+                            <input type="text" class="form-control" id="noteEdge" name="note"
+                                   placeholder="Enter note" required="false">
+                        </div>
+
+                        <input type="hidden" id="type" name="type" value="">
+                        <button type="submit" class="btn btn-success btn-block"><span
+                                class="glyphicon glyphicon-ok"></span> OK
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Modal -->
+    <div class="modal fade" id="confirm_2" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="modal-title_2">Are you sure?</h4>
+                </div>
+                <div class="modal-body">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+                    <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/jquery.dataTables.js') }}"></script>
+<script src="{{ url_for('static',filename='js/index2.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,326 @@
+{% extends "layout.html" %}
+
+    <!--../是返回上一级目录 -->
+    <!--bootstrap里面的三个文件夹:css、fonts、js全部拷贝到当前项目目录下;其中，我按网上的指导，额外下载了jquery放到js文件夹里面-->
+    <!--按次序引用相关文件-->
+{% block head %}
+    <!-- <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-table.css') }}"> -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-table.min.css') }}">
+
+    <script src="{{ url_for('static',filename='JS/bootstrap-table.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/bootstrap-table-locale-all.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.edittable.min.css') }}">
+    
+<!--
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+-->
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/demo.css') }}">
+    <script src="{{ url_for('static',filename='JS/d3.v3.min.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static',filename='JS/dagre-d3.js') }}"></script>
+
+    <!-- Pull in JQuery dependencies -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/tipsy.css') }}">
+    <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/checkNode.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/jquery.edittable.min.js') }}"></script>
+
+    <style id="css">
+    text {
+    font-weight: 300;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+    font-size: 14px;
+    }
+
+    .node rect {
+      stroke: #333;
+      fill: #fff;
+    }
+
+    .edgePath path {
+      stroke: #333;
+      fill: #333;
+      stroke-width: 1.5px;
+    }
+
+    .node text {
+      pointer-events: none;
+    }
+
+    /* This styles the title of the tooltip */
+    .tipsy .name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #60b1fc;
+      margin: 0;
+    }
+
+    /* This styles the body of the tooltip */
+    .tipsy .description {
+      font-size: 1.2em;
+    }
+    </style>
+{% endblock %}
+{% import "navbar.html" as navbar %}
+{% block body %}
+
+<body style="background: #bee7fa">
+    {{ navbar.dump_link(1) }}<!-- 生成导航栏 -->
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="Show">
+                <svg id="My_Svg" class="My_Svg"></svg>
+                <script id="js">
+                "use strict";
+                // Create a new directed graph
+                var g = new dagreD3.graphlib.Graph().setGraph({});
+                var Show_Width=document.getElementById("Show").offsetWidth;//为了获取非内嵌div宽度，我花了好长时间啊，最后找到offsetwith可以
+                var render = new dagreD3.render();
+                var svg = d3.select('#My_Svg');
+                var inner = svg.append('g');
+                var zoom = d3.behavior.zoom().on("zoom", (function() {
+                            inner.attr("transform", "translate(" + d3.event.translate + ")" +
+                                         "scale(" + d3.event.scale + ")")}));
+                svg.call(zoom);
+                // States and transitions from RFC 793
+                //先通过 setNode，key定位
+                var states = {
+                  "01": {
+                    description: "我是01",
+                    style: "fill: #f77"
+                  },
+
+                  "02": {
+                    description: "我是02",
+                    style: "fill: #f77"
+                  },
+
+                    "03": {
+                    description: "我是03",
+                    style: "fill: #f77"
+                  },
+
+                     "04": {
+                    description: "我是04",
+                    style: "fill: #f77"
+                  },
+                     "05": {
+                    description: "我是05",
+                    style: "fill: #f77"
+                  }
+                };
+
+                // Add states to the graph, set labels, and style
+                Object.keys(states).forEach(function(state) {//取代hasOwnProperty()的新用法
+                  var value = states[state];
+                  value.label = state;
+                  value.rx = value.ry = 5;
+                  g.setNode(state, value);
+                });
+                // Set up the edges
+                //画图代码：
+                g.setEdge("01",     "02",     { label: "12" });
+                g.setEdge("01",     "03",     { label: "13" });
+                g.setEdge("01",     "04",     { label: "14" });
+                g.setEdge("01",     "05",     { label: "15" });
+                g.setEdge("02",     "03",     { label: "23" });
+                g.setEdge("02",     "04",     { label: "24" });
+                g.setEdge("02",     "05",     { label: "25" });
+                var styleTooltip = function(name, description) {
+  return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+};
+                render(inner,g);
+
+                //为元素添加描述
+               inner.selectAll('g.node')
+                .attr('title',function(v){return styleTooltip(v, g.node(v).description)})
+                .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); });
+
+                //居中显示
+                var initialScale = 0.75;
+zoom
+  .translate([(Show_Width - g.graph().width * initialScale) / 2, 20])
+  .scale(initialScale)
+  .event(svg);
+svg.attr('height', g.graph().height * initialScale + 40);
+
+
+                </script>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" id="input-form">
+                <div class="list-group ">
+                    <div class="form-group">
+
+                        <div class="input-group">
+                            <ul>
+                            <label>节点名</label>
+                            <input type="text" class="form-control" id="Name_Node">
+                            </ul>
+                            <ul>
+                            <label>节点序号(缺省时自动生成为最大当前序号的下一个)</label>
+                            <input type="text" class="form-control" id="Num_Node_0">
+                            </ul>
+                            <!-- <div class="btn btn-default" id="Submit__Node">确定</div> -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-group ">
+                    <div class="form-group">
+
+                        <div class="input-group">
+                            <ul>
+                            <label>前驱节点序号</label>
+                            <input type="text" class="form-control" id="Num_Node_1">
+                            </ul>
+                            <ul>
+                            <label>后继节点序号</label>
+                            <input type="text" class="form-control" id="Num_Node_2">
+                            </ul>
+                            <ul>
+                            <label>耗时</label>
+                            <input type="text" class="form-control" id="Cost_Time">
+                            </ul>
+                            <div class="btn btn-default" id="Submit__Line">确定</div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="side-bar-card clearfix">
+                    <div class="card-title">节点信息</div>
+                    <div class="card-body">
+                        <div class="list">
+                            <div class="item">
+                                <div class="title">序号1</div>
+                                <p>节点名1</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">序号2</div>
+                                <p>节点名2</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">序号3</div>
+                                <p>节点名3</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="side-bar-card clearfix">
+                    <div class="card-title">边信息</div>
+                    <div class="card-body">
+                        <div class="list">
+                            <div class="item">
+                                <div class="title">1-->2</div>
+                                <p>3</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">4-->6</div>
+                                <p>5</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">5-->7</div>
+                                <p>8</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<!--script src="../../static/JS/jquery-3.2.1.js"></script>-->
+<script>
+    $(document).ready(function(){
+        let selectNode_func = function(){
+            var Name_Node = $("#Name_Node").val();
+            var Num_Node_0 = $("#Num_Node_0").val();
+            if (Num_Node_0 === ''){//生成默认最大值
+                Num_Node_0 = g.nodeCount() + 1;
+                $('#Num_Node_0').val(Num_Node_0);
+            }
+            if (g.hasNode(Num_Node_0) && $('div.alert alert-info')){//输入已经存在的节点，可以报错，或者直接选择该节点！！
+                //swal('错误',`存在相同的节点:\n 名称： ${Name_Node}\n编号： ${Num_Node_0}`,'error');
+                $('div.list-group:first').prepend('<div class="alert alert-info" role="alert">将使用已经存在的节点</div>')
+                return;
+            }
+            var state = {
+                        rx:5,ry:5,
+                        label:Num_Node_0,
+                        description: Name_Node,
+                        style: "fill: #f77"
+                    };
+            g.setNode(Num_Node_0, state);
+            render(inner,g);//运行渲染器，更新图形
+
+            //为新添加的节点增加tipsy
+            let temp = inner.selectAll('g.node');
+               temp.filter(function(d,i){return i === temp.size() - 1;})
+                .attr('title',function(v){return styleTooltip(v, g.node(v).description)})
+                .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); });
+        };
+        $('#Num_Node_0').blur(selectNode_func);
+      
+    });
+    //界面TODO:
+    // 数据合法性判断              (x)
+    // 传输数据到后端
+    // 悬浮出输入的界面，动态效果
+    // 整理出节点信息的表格
+    // 可以一次选择多个前驱后继
+    // 修改现有的连线
+    // 实现点击选择节点
+    // --------------------------
+    // 添加|修改|删除
+    // 合法性检查：checkNode.js 
+    //  new checkNode([[1,2],[1,3],[1,4],[3,2],[3,5],[4,5],[6,4],[6,5]]).isValid()
+    //  输出拓扑排序：6   1   3   2   4   5
+    //  返回 true
+    //  new checkNode([['a','b'],['b','a']]).isValid()
+    //  输出存在回路：
+    //  返回false
+
+    $(document).ready(function () {
+        let Submit__Line_func = function (event) {
+            let nodeBefore = $('#Num_Node_1').val();//前驱
+            let nodeAfter = $('#Num_Node_2').val();//后继 Todo:实现点选！！
+            let Num_Node_0 = $('#Num_Node_0').val();
+            let Cost_Time = $('#Cost_Time').val();
+            let nodeName = $('#Name_Node').val();
+                        // 输入不存在的节点会报错！！可以改变编辑框的颜色！
+            [$('#Num_Node_1'),$('#Num_Node_2'),$('#Num_Node_0')].forEach(function(node){if (!g.hasNode(node.val())){
+                    let color = node.css('border');
+                    node.css('border','solid red');
+                    let t = setInterval(function(){node.css('border',color);},500);
+                    let s = setInterval(function(){node.css('border','solid red');},400);
+                    let func = function(){//有输入时去除闪烁
+                        clearInterval(s);
+                        clearInterval(t);
+                        node.css('border',color);
+                        node.unbind('keydown');
+                    }
+                    node.keydown(func);
+                    swal('错误','该节点不存在：\n 编号：'+node.val() ,'error');
+                    }
+                });
+            if (!g.hasNode(Num_Node_0)||!g.hasNode(nodeBefore)||!g.hasNode(nodeAfter)) return;
+            // 边检查：
+            // todo：可行性，合法性
+            
+            g.setEdge(Num_Node_0,nodeAfter,{label:Cost_Time});
+            g.setEdge(nodeBefore,Num_Node_0,{label:Cost_Time});
+            render(inner,g);
+        }
+        $('#Submit__Line').click(Submit__Line_func);
+        $('#Cost_Time').blur(Submit__Line_func);
+
+    })
+</script>
+
+{% endblock %}

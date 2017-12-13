@@ -1,0 +1,10 @@
+{% extends "layout.html" %}
+{% import "navbar.html" as navbar %}
+
+{% block body %}
+<body>
+{{ navbar.dump_link(2) }}
+    <P  style="text-align: center"><img src="{{ url_for('static',filename='Source/Please_Wait.jpg') }}" style="width: 200px;height: 200px;border-radius: 30px;"></P>
+    <h5 style="text-align: center;font-size: larger">Please Wait...</h5>
+</body>
+{% endblock %}

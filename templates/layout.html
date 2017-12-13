@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--../是返回上一级目录 -->
+    <!--bootstrap里面的三个文件夹:css、fonts、js全部拷贝到当前项目目录下;其中，我按网上的指导，额外下载了jquery放到js文件夹里面-->
+    <!--按次序引用相关文件-->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/My_Support.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.css') }}">
+    <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/bootstrap.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/sweetalert.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/send.js') }}"></script>
+    {% block head %}{% endblock %}
+<!--
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+-->
+</head>
+    {% block body %}{% endblock %}
+<div class="footer">
+        By 高张阳·史静佳·梁汗文
+</div>
+</html>

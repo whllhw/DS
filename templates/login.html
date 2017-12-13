@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+{% import "navbar.html" as navbar %}
+{% block body %}
+<body>
+{{ navbar.dump_link() }}
+    <div class="container container-small">
+        <h1>登录
+            <small>没有账号?<a href="{{ url_for('sign') }}">注册</a> </small>
+        </h1>
+        <form>
+            <div class="form-group">
+                <label>用户名/手机/邮箱</label>
+                <input type="text" class="form-control">
+            </div>
+            <div class="form-group">
+                <label>密码</label>
+                <div type="password" class="form-control"></div>
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" type="submit">登录</button>
+            </div>
+            <div class="form-group">
+                <a href="{{ url_for('forget') }}">忘记密码?</a>
+            </div>
+        </form>
+    </div>
+</body>
+{% endblock %}

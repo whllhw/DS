@@ -1,0 +1,270 @@
+{% extends "layout.html" %}
+
+{% block head %}
+    <!--../是返回上一级目录 -->
+    <!--bootstrap里面的三个文件夹:css、fonts、js全部拷贝到当前项目目录下;其中，我按网上的指导，额外下载了jquery放到js文件夹里面-->
+    <!--按次序引用相关文件-->
+
+<link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-table.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-table.min.css') }}">
+
+    <script src="{{ url_for('static',filename='JS/bootstrap-table.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/bootstrap-table-locale-all.js') }}"></script>
+
+<!--
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+-->
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/demo.css') }}">
+    <script src="{{ url_for('static',filename='JS/d3.v3.min.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static',filename='JS/dagre-d3.js') }}"></script>
+
+    <!-- Pull in JQuery dependencies -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/tipsy.css') }}">
+    <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script>
+
+<!--
+    <link rel="stylesheet" href="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="http://cdn.static.runoob.com/libs/jquery/2.1.1/jquery.min.js"></script>
+	<script src="http://cdn.static.runoob.com/libs/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+-->
+
+
+    <style id="css">
+    text {
+    font-weight: 300;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+    font-size: 14px;
+    }
+
+    .node rect {
+      stroke: #333;
+      fill: #fff;
+    }
+
+    .edgePath path {
+      stroke: #333;
+      fill: #333;
+      stroke-width: 1.5px;
+    }
+
+    .node text {
+      pointer-events: none;
+    }
+
+    /* This styles the title of the tooltip */
+    .tipsy .name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #60b1fc;
+      margin: 0;
+    }
+
+    /* This styles the body of the tooltip */
+    .tipsy .description {
+      font-size: 1.2em;
+    }
+    </style>
+    {% endblock %}
+
+{% import "navbar.html" as navbar %}
+
+{% block body %}
+<body style="background: #bee7fa">
+    {{ navbar.dump_link(3) }}<!-- 生成导航栏 -->
+
+    <div class="container">
+        <div class="row clearfix">
+            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8" id="Show">
+
+                <svg id="My_Svg" class="My_Svg"></svg>
+
+                <script id="js">
+                // Create a new directed graph
+                var g = new dagreD3.graphlib.Graph().setGraph({});
+                var Show_Width=document.getElementById("Show").offsetWidth;//为了获取非内嵌div宽度，我花了好长时间啊，最后找到offsetwidth可以
+
+                // States and transitions from RFC 793
+                var states = {
+                  "01": {
+                    description: "我是01",
+                    style: "fill: #f77"
+                  },
+
+                  "02": {
+                    description: "我是02",
+                    style: "fill: #f77"
+                  },
+
+                    "03": {
+                    description: "我是03",
+                    style: "fill: #f77"
+                  },
+
+                     "04": {
+                    description: "我是04",
+                    style: "fill: #f77"
+                  },
+                     "05": {
+                    description: "我是05",
+                    style: "fill: #f77"
+                  },
+                };
+
+                // Add states to the graph, set labels, and style
+                Object.keys(states).forEach(function(state) {
+                  var value = states[state];
+                  value.label = state;
+                  value.rx = value.ry = 5;
+                  g.setNode(state, value);
+                });
+
+                // Set up the edges
+                g.setEdge("01",     "02",     { label: "12" });
+                //g.setEdge("01",     "03",     { label: "13" });
+                g.setEdge("02",     "04",     { label: "12" });
+                g.setEdge("03",     "04",     { label: "12" });
+                g.setEdge("02",     "03",     { label: "12" });
+                //g.setEdge("01",     "04",     { label: "12" });
+                //g.setEdge("04",     "05",     { label: "45" });
+
+                // Create the renderer
+                var render = new dagreD3.render();
+
+                // Set up an SVG group so that we can translate the final graph.
+                var svg = d3.select("svg"),
+                    inner = svg.append("g");
+
+                // Set up zoom support
+                var zoom = d3.behavior.zoom().on("zoom", function() {
+                    inner.attr("transform", "translate(" + d3.event.translate + ")" +
+                                                "scale(" + d3.event.scale + ")");
+                  });
+                svg.call(zoom);
+
+                // Simple function to style the tooltip for the given node.
+                var styleTooltip = function(name, description) {
+                  return "<p class='name'>" + name + "</p><p class='description'>" + description + "</p>";
+                };
+
+                // Run the renderer. This is what draws the final graph.
+                render(inner, g);
+
+                inner.selectAll("g.node")
+                  .attr("title", function(v) { return styleTooltip(v, g.node(v).description) })
+                  .each(function(v) { $(this).tipsy({ gravity: "w", opacity: 1, html: true }); });
+
+                // Center the graph
+                var initialScale = 0.75;
+                zoom
+                  .translate([(Show_Width - g.graph().width * initialScale) / 2, 20])
+                  .scale(initialScale)
+                  .event(svg);
+
+                svg.attr('height', g.graph().height * initialScale + 40);
+                </script>
+
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+
+
+                <div class="side-bar-card clearfix">
+                    <div class="card-title">节点信息</div>
+                    <div class="card-body">
+                        <div class="list">
+                            <div class="item">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <caption>基本的表格布局</caption>
+                                        <thead>
+                                          <tr>
+                                              <th>节点序号</th>
+                                              <th>节点名</th>
+                                              <th>最早开始时间(ES)</th>
+                                              <th>最迟开始时间(LS)</th>
+                                              <th>最早完成时间(EF)</th>
+                                              <th>最迟完成时间(LF)</th>
+                                              <th>总时差(TF)</th>
+                                              <th>自由时差(FF)</th>
+                                          </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>01</td>
+                                                <td>高张阳</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>02</td>
+                                                <td>史静佳</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                            </tr>
+
+                                            <tr>
+                                                <td>03</td>
+                                                <td>梁汉文</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                                <td>2</td>
+                                            </tr>
+                                       </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="side-bar-card clearfix">
+                    <div class="card-title">边信息</div>
+                    <div class="card-body">
+                        <div class="list">
+                            <div class="item">
+                                <div class="title">1-->2</div>
+                                <p>3</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">4-->6</div>
+                                <p>5</p>
+                            </div>
+                            <div class="item">
+                                <div class="title">5-->7</div>
+                                <p>8</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="side-bar-card clearfix">
+                    <div class="card-title">关键路径</div>
+                    <div class="card-body">
+                        <div class="list">
+                            <div class="item">
+                                <div class="title">1-->2-->3</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}

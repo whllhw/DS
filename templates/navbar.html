@@ -1,0 +1,27 @@
+
+{% macro dump_link(active=10) -%}
+
+    {% set links = [('/', '首页'), (url_for('input'), '输入'), (url_for('cal'), '计算'), (url_for('result'), '查看结果')] %}
+
+    <div class="container">
+        <div class="navbar navbar-default">
+            <div class="navbar-header">
+                <a href="/" class="navbar-brand Logo-1"></a>
+            </div>
+            <ul class="nav navbar-nav">
+                {%- for link in links %}
+                {%- if active == loop.index0 %}
+                    <li class="My_Active"><a href="{{ link[0] }}">{{ link[1] }}</a> </li>
+                {% else %}
+                     <li><a href="{{ link[0] }}">{{ link[1] }}</a></li>
+                {% endif %}
+                {%- endfor %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="{{ url_for('forget') }}">忘记密码</a> </li>
+                <li><a href="{{ url_for('sign') }}">注册</a> </li>
+                <li><a href="{{ url_for('login') }}">登录</a> </li>
+            </ul>
+        </div>
+    </div>
+{%- endmacro %}

@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap-table.css') }}">
+    <script src="{{ url_for('static',filename='JS/bootstrap-table.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/bootstrap-table-locale-all.js') }}"></script>
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.edittable.min.css') }}">
+    
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/demo.css') }}">
+    <script src="{{ url_for('static',filename='JS/d3.v3.min.js') }}" charset="utf-8"></script>
+    <script src="{{ url_for('static',filename='JS/dagre-d3.js') }}"></script>
+    <!-- Pull in JQuery dependencies -->
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/tipsy.css') }}">
+    <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/jquery.edittable.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script>
+    <script src="{{ url_for('static',filename='JS/checkNode.js') }}"></script>
+
+    <style id="css">
+    text {
+    font-weight: 300;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+    font-size: 14px;
+    }
+    .node rect {
+      stroke: #333;
+      fill: #fff;
+    }
+    .edgePath path {
+      stroke: #333;
+      fill: #333;
+      stroke-width: 1.5px;
+    }
+    .node text {
+      pointer-events: none;
+    }
+    /* This styles the title of the tooltip */
+    .tipsy .name {
+      font-size: 1.5em;
+      font-weight: bold;
+      color: #60b1fc;
+      margin: 0;
+    }
+    /* This styles the body of the tooltip */
+    .tipsy .description {
+      font-size: 1.2em;
+    }
+    </style>
+{% endblock %}
+{% import "navbar.html" as navbar %}
+{% block body %}
+<body style="background: #bee7fa">
+	 {% for message in get_flashed_messages() %}
+    <div class=flash>{{ message }}</div>
+  	{% endfor %}
+	<dir id="edittable"></dir>
+    <script>
+    	var mytable = $('#edittable').editTable({
+    		tableClass:'inputtable',
+    		headerCols:['编号','名称','时间'],
+    		data: [[]
+		],
+    	});
+    </script>
+</body>
+{% endblock %}
