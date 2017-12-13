@@ -13,7 +13,6 @@
     <script src="{{ url_for('static',filename='JS/d3.v3.min.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static',filename='JS/dagre-d3.js') }}"></script>
     <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
-    <!-- <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script> -->
 
     <style id="css">
         text {
@@ -57,12 +56,31 @@
 
 <body style="background: #bee7fa">
     <div class="container">
+            <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+                    <div class="container-fluid">
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#">网络计划</a>
+                    </div>
+                    <div>
+                        <ul class="nav navbar-nav">
+                            <li class="active"><a href="#">计算</a></li>
+                            <li><a href="#">清空</a></li>
+                        </ul>
+                    </div>
+                    </div>
+            </nav>
+    </div>
+    
+    <div class="container" style="padding-top:70px">
         <div class="col-md-4">
+            <div class="">
             <div class="row clearfix" style="position: fixed;">
                 <div class="" id="Show">
-                    <svg id="My_Svg" class="My_Svg" style="background-color: ghostwhite"></svg>
+                    <svg id="My_Svg" class="My_Svg"></svg>
                 </div>
             </div>
+            </div>  
+            
         </div>
         <div class="col-md-8">
             <div class="">
