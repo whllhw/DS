@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" type="text/css"/>
-    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.dataTables.css') }}" type="text/css"/>
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/bootstrap.min.css') }}" type="text/css" />
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/jquery.dataTables.css') }}" type="text/css" />
     <link rel="stylesheet" href="{{ url_for('static',filename='css/tipsy.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/My_Support.css') }}">
     <link rel="stylesheet" href="{{ url_for('static',filename='css/demo.css') }}">
@@ -15,248 +16,252 @@
     <!-- <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script> -->
 
     <style id="css">
-    text {
-    font-weight: 300;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
-    font-size: 14px;
-    }
+        text {
+            font-weight: 300;
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+            font-size: 14px;
+        }
 
-    .node rect {
-      stroke: #333;
-      fill: #fff;
-    }
+        .node rect {
+            stroke: #333;
+            fill: #fff;
+        }
 
-    .edgePath path {
-      stroke: #333;
-      fill: #333;
-      stroke-width: 1.5px;
-    }
+        .edgePath path {
+            stroke: #333;
+            fill: #333;
+            stroke-width: 1.5px;
+        }
 
-    .node text {
-      pointer-events: none;
-    }
+        .node text {
+            pointer-events: none;
+        }
 
-    /* This styles the title of the tooltip */
-    .tipsy .name {
-      font-size: 1.5em;
-      font-weight: bold;
-      color: #60b1fc;
-      margin: 0;
-    }
+        /* This styles the title of the tooltip */
 
-    /* This styles the body of the tooltip */
-    .tipsy .description {
-      font-size: 1.2em;
-    }
+        .tipsy .name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #60b1fc;
+            margin: 0;
+        }
+
+        /* This styles the body of the tooltip */
+
+        .tipsy .description {
+            font-size: 1.2em;
+        }
     </style>
 
 </head>
+
 <body style="background: #bee7fa">
-<div class="container ">
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <!-- New  button -->
-            <div class="text-center">
-            <button type="button" data-dismiss="modal" class="btn btn-primary" id="new">New</button>
+    <div class="container">
+        <div class="col-md-4">
+            <div class="row clearfix" style="position: fixed;">
+                <div class="" id="Show">
+                    <svg id="My_Svg" class="My_Svg" style="background-color: ghostwhite"></svg>
+                </div>
             </div>
+        </div>
+        <div class="col-md-8">
+            <div class="">
+                <div class="row clearfix">
+                    <div class="">
+                        <!-- New  button -->
+                        <div class="text-center">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="new">New</button>
+                        </div>
 
-            <!-- datatables -->
-            <table id="datatables" class="table table-hover">
-            <thead>
-            <tr>
-                <th>编号</th>
+                        <!-- datatables -->
+                        <table id="datatables" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>ES</th>
+                                    <th>LS</th>
+                                    <th>节点序号</th>
+                                    <th>节点名称</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
 
-                <th>ES</th>
-                <th>LS</th>
-                <th>节点序号</th>
-                <th>节点名称</th>
-                <th>备注</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-            <tfoot>
-            <tr>
-
-            </tr>
-            </tfoot>
-            </table>
+                                </tr>
+                            </tfoot>
+                        </table>
 
 
-            <!-- NEW and EDIT Modal -->
-            <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title" id="modal_title"></h4>
+                        <!-- NEW and EDIT Modal -->
+                        <div class="modal fade" id="myModal" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal_title"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" id="nodeForm">
+                                            <div class="form-group">
+
+                                                <label for="uid">
+                                                    <span class="glyphicon glyphicon-pencil"></span> 项目序号 </label>
+                                                <input type="text" class="form-control" id="uid" name="uid" placeholder="Enter uid" required="true">
+                                            </div>
+                                            <div class="form-group">
+
+                                                <label for="nodeName">
+                                                    <span class="glyphicon glyphicon-pencil"></span> 项目名称 </label>
+                                                <input type="text" class="form-control" id="nodeName" name="nodeName" placeholder="Enter nodeName" required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="note">
+                                                    <span class="glyphicon glyphicon-file"></span> 备注 </label>
+                                                <input type="text" class="form-control" id="note" name="note" placeholder="Enter note" required="false">
+                                            </div>
+                                            <input type="hidden" id="type" name="type" value="">
+                                            <input type="hidden" id="id" name="id" value="">
+                                            <button type="submit" class="btn btn-success btn-block">
+                                                <span class="glyphicon glyphicon-ok"></span> OK
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="confirm" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Are you sure?</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+                                        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="modal-body">
-                        <form role="form" id="nodeForm">
-                            <div class="form-group">
+                </div>
+            </div>
+            <div class="">
+                <div class="row clearfix">
+                    <div class="">
+                        <!-- New  button -->
+                        <div class="text-center">
+                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="new_2">New</button>
+                        </div>
 
-                                <label for="uid"><span class="glyphicon glyphicon-pencil"></span> 项目序号 </label>
-                                <input type="text" class="form-control" id="uid" name="uid" placeholder="Enter uid"
-                                       required="true">
-                            </div>
-                            <div class="form-group">
+                        <!-- datatables -->
 
-                                <label for="nodeName"><span class="glyphicon glyphicon-pencil"></span> 项目名称 </label>
-                                <input type="text" class="form-control" id="nodeName" name="nodeName" placeholder="Enter nodeName"
-                                       required="true">
+                        <table id="datatables2" class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>编号</th>
+                                    <th>头节点序号</th>
+                                    <th>尾节点序号</th>
+                                    <th>耗时</th>
+                                    <th>ES</th>
+                                    <th>LS</th>
+                                    <th>TF</th>
+                                    <th>Is_Critical_Path</th>
+                                    <th>EF</th>
+                                    <th>LF</th>
+                                    <th>FF</th>
+                                    <th>名称</th>
+                                    <th>备注</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                        </table>
+
+                        <!-- NEW and EDIT Modal -->
+                        <div class="modal fade" id="myModal_2" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title" id="modal_title_2"></h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form role="form" id="edgeForm">
+                                            <input type="hidden" id="id_2" name="id" value="">
+                                            <div class="form-group">
+
+                                                <label for="head">
+                                                    <span class="glyphicon glyphicon-pencil"></span> 前驱 </label>
+                                                <input type="text" class="form-control" id="head" name="head" placeholder="Enter head" required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="tail">
+                                                    <span class="glyphicon glyphicon-file"></span> 后继 </label>
+                                                <input type="text" class="form-control" id="tail" name="tail" placeholder="Enter tail" required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="duration">
+                                                    <span class="glyphicon glyphicon-file"></span> 持续时间 </label>
+                                                <input type="text" class="form-control" id="duration" name="duration" placeholder="Enter duration" required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="name">
+                                                    <span class="glyphicon glyphicon-file"></span> 名称 </label>
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter name" required="true">
+                                            </div>
+                                            <div class="form-group">
+                                                <label for="note">
+                                                    <span class="glyphicon glyphicon-file"></span> 备注 </label>
+                                                <input type="text" class="form-control" id="noteEdge" name="note" placeholder="Enter note" required="false">
+                                            </div>
+
+                                            <input type="hidden" id="type_2" name="type" value="">
+                                            <button type="submit" class="btn btn-success btn-block">
+                                                <span class="glyphicon glyphicon-ok"></span> OK
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label for="note"><span class="glyphicon glyphicon-file"></span> 备注 </label>
-                                <input type="text" class="form-control" id="note" name="note"
-                                       placeholder="Enter note" required="false">
+                        </div>
+
+                        <!-- Delete Modal -->
+                        <div class="modal fade" id="confirm_2" role="dialog">
+                            <div class="modal-dialog">
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">Are you sure?</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
+                                        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
+                                    </div>
+                                </div>
                             </div>
-                            <input type="hidden" id="type" name="type" value="">
-                            <input type="hidden" id="id" name="id" value="">
-                            <button type="submit" class="btn btn-success btn-block"><span
-                                    class="glyphicon glyphicon-ok"></span> OK
+                        </div>
+                        <div class="text-center">
+                            <button type="button" class="btn btn-primary" id="showResult">显示结果</button>
+                            <button type="button" class="btn btn-primary" id="clear">
+                                清空结果
                             </button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            </div>
+                        </div>
 
-            <!-- Delete Modal -->
-            <div class="modal fade" id="confirm" role="dialog">
-            <div class="modal-dialog">
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h4 class="modal-title">Are you sure?</h4>
-                    </div>
-                    <div class="modal-body">
-                        <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
-                        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
                     </div>
                 </div>
-            </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="container ">
-    <div class="row clearfix">
-        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <!-- New  button -->
-            <div class="text-center">
-                <button type="button" data-dismiss="modal" class="btn btn-primary" id="new_2">New</button>
-            </div>
-
-            <!-- datatables -->
-
-            <table id="datatables2" class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>编号</th>
-                        <th>头节点序号</th>
-                        <th>尾节点序号</th>
-                        <th>耗时</th>
-                        <th>ES</th>
-                        <th>LS</th>
-                        <th>TF</th>
-                        <th>Is_Critical_Path</th>
-                        <th>EF</th>
-                        <th>LF</th>
-                        <th>FF</th>
-                        <th>名称</th>
-                        <th>备注</th>
-                        <th>操作</th>
-                    </tr>
-                </thead>
-            </table>
-
-            <!-- NEW and EDIT Modal -->
-            <div class="modal fade" id="myModal_2" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="modal_title_2"></h4>
-                        </div>
-                        <div class="modal-body">
-                            <form role="form" id="edgeForm">
-                                <input type="hidden" id="id_2" name="id" value="">
-                                <div class="form-group">
-
-                                    <label for="head"><span class="glyphicon glyphicon-pencil"></span> 前驱 </label>
-                                    <input type="text" class="form-control" id="head" name="head" placeholder="Enter head"
-                                           required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="tail"><span class="glyphicon glyphicon-file"></span> 后继 </label>
-                                    <input type="text" class="form-control" id="tail" name="tail"
-                                           placeholder="Enter tail" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="duration"><span class="glyphicon glyphicon-file"></span> 持续时间 </label>
-                                    <input type="text" class="form-control" id="duration" name="duration"
-                                           placeholder="Enter duration" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="name"><span class="glyphicon glyphicon-file"></span> 名称 </label>
-                                    <input type="text" class="form-control" id="name" name="name"
-                                           placeholder="Enter name" required="true">
-                                </div>
-                                <div class="form-group">
-                                    <label for="note"><span class="glyphicon glyphicon-file"></span> 备注 </label>
-                                    <input type="text" class="form-control" id="noteEdge" name="note"
-                                           placeholder="Enter note" required="false">
-                                </div>
-
-                                <input type="hidden" id="type_2" name="type" value="">
-                                <button type="submit" class="btn btn-success btn-block"><span
-                                        class="glyphicon glyphicon-ok"></span> OK
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Delete Modal -->
-            <div class="modal fade" id="confirm_2" role="dialog">
-                <div class="modal-dialog">
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Are you sure?</h4>
-                        </div>
-                        <div class="modal-body">
-                            <button type="button" data-dismiss="modal" class="btn btn-primary" id="delete">Delete</button>
-                            <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="text-center">
-                    <button type="button" class="btn btn-primary" id="showResult">显示结果</button>
-                    <button type="button" class="btn btn-primary" id="clear">
-                        清空结果
-                    </button>
-            </div>
-            
-        </div>
-    </div>
-</div>
-
-<div  class="container">
-        <div class="row clearfix">
-            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"  id="Show">
-                <svg id="My_Svg" class="My_Svg" style="background-color: ghostwhite"></svg>
-            </div>
-        </div>
-    </div>
-
-<script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
-<script src="{{ url_for('static',filename='js/jquery.dataTables.js') }}"></script>
-<script src="{{ url_for('static',filename='js/index.js') }}"></script>
-<script src="{{ url_for('static',filename='js/index2.js') }}"></script>
-<script src="{{ url_for('static',filename='js/draw.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/jquery.dataTables.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/index.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/index2.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/draw.js') }}"></script>
 </body>
+
 </html>
