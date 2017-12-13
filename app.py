@@ -206,6 +206,8 @@ def getResult():
         "error":errorInfo[error]
         })
 
+    a=request
+
     temp = []
     try:
         orderColumns = request.args['columns['+request.args['order[0][column]']+'][data]'].replace('nodeName','name')
@@ -220,18 +222,32 @@ def getResult():
             start=request.args['start']
             ))
         # id , name, note ,uid
+
+        #cur.execute(r'Select id,name,note,uid,ES,LS From nodes2')
         data = cur.fetchall()
         length = len(data)
         temp = [{'id':i[0],'nodeName':i[1],'note':i[2],'uid':i[3],'ES':i[4],'LS':i[5]} for i in data]
-    except IOError:
+
+        Re = jsonify({
+            "draw": request.args['draw'],  # 不知道这行语句有什么用，但是它会不时报错，当request为空时
+            "recordsTotal": length,
+            "recordsFiltered": length,
+            "data": temp
+        })
+        return Re
+    except :#删了IOError
         pass
 
-    return jsonify({
-        "draw":request.args['draw'],
-        "recordsTotal":length,
-        "recordsFiltered":length,
-        "data":temp
-    })
+    #if len(request)==0:
+    #    Re = jsonify({
+    #        #"draw": request.args['draw'],  # 不知道这行语句有什么用，但是它会不时报错，当request为空时
+    #        "recordsTotal": length,
+    #        "recordsFiltered": length,
+    #        "data": temp
+    #    })
+    #    return Re
+
+    return
 
 @app.route('/api/resultEdge')
 def getResultEdge():
@@ -251,6 +267,7 @@ def getResultEdge():
             length=request.args['length'],
             start=request.args['start']
         ))
+        #cur.execute(r'Select id,uid,head,tail,duration,note,name,ES,LS,TF,Is_Critcal_Path,EF,LF,FF,Cal_ID From nodes2')
         data = cur.fetchall()
         length = len(data)
         temp = [{
@@ -270,15 +287,28 @@ def getResultEdge():
                         'FF':i[13],
                         'Cal_ID':i[14]
                     } for i in data]
+
+        Re = jsonify({
+            "draw": request.args['draw'],  # 不知道这行语句有什么用，但是它会不时报错，当request为空时
+            "recordsTotal": length,
+            "recordsFiltered": length,
+            "data": temp
+        })
+
+        return Re
     except IOError:
         pass
 
-    return jsonify({
-        "draw":request.args['draw'],
-        "recordsTotal":length,
-        "recordsFiltered":length,
-        "data":temp
-        })
+    #if len(request)==0:
+    #    Re = jsonify({
+    #        #"draw": request.args['draw'],  # 不知道这行语句有什么用，但是它会不时报错，当request为空时
+    #        "recordsTotal": length,
+    #        "recordsFiltered": length,
+    #        "data": temp
+    #    })
+    #    return Re
+    return
+
 
 @app.route('/api/clear')
 def clear():
