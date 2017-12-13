@@ -67,6 +67,7 @@ print(Py_Links)
 def Cal(Data):#{'Nodes': ,'Links': }
     Py_N=Data['Nodes']
     Py_L=Data['Links']
+
     GSL = ctypes.cdll.LoadLibrary('./后台_01_DLL.dll')
     GSL.My_C.argtypes = (POINTER(ctypes.c_float), POINTER(ctypes.c_float), ctypes.c_int, ctypes.c_int)
     Py_Nodes = np.asarray(Py_N, dtype=np.float32)
@@ -81,7 +82,7 @@ def Cal(Data):#{'Nodes': ,'Links': }
     if not Py_Links.flags['C_CONTIGUOUS']:
         Py_Links = np.ascontiguous(Py_Links, dtype=Py_Links.dtype)
 
-    GSL.My_C(Py_Nodes_P, Py_Links_P, 9, 11)
+    GSL.My_C(Py_Nodes_P, Py_Links_P, Py_N.shape[0],Py_L.shape[0] )
 
     Data2={'Nodes':Py_Nodes,'Links':Py_Links}
 
