@@ -314,12 +314,7 @@ function draw(){
     var nodestates=new Array();
     for (var i=0;i<nodes.length;i++)
     {
-        nodestates[nodes[i].id]={description:"名称:"+nodes[i].name + "\n" + "ES:" + nodes[i].ES+"|"+"LS:"+nodes[i].LS,style:"fill:#f77"};
-    }
-    var linkstates=new Array();
-    for (var i=0;i<links.length;i++)
-    {
-        linkstates[i.toString()]={description1:links[i].duration,style:"fill:#f77"};
+        nodestates[nodes[i].id]={description:"名称:"+nodes[i].nodeName + "|" + "ES:" + nodes[i].ES+"|"+"LS:"+nodes[i].LS,style:"fill:#f77"};
     }
     //
     // Add states to the graph, set labels, and style
