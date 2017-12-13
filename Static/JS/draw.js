@@ -314,7 +314,7 @@ function draw(){
     var nodestates=new Array();
     for (var i=0;i<nodes.length;i++)
     {
-        nodestates[nodes[i].id]={description:nodes[i].nodeName + '\n' + nodes[i].note,style:"fill:#f77"};
+        nodestates[nodes[i].id]={description:"名称:"+nodes[i].name + "\n" + "ES:" + nodes[i].ES+"|"+"LS:"+nodes[i].LS,style:"fill:#f77"};
     }
     var linkstates=new Array();
     for (var i=0;i<links.length;i++)
