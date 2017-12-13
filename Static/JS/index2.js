@@ -117,6 +117,5 @@ $('#showResult').click(function(e){
     [4,5,6,8,9,10].forEach(function(i){
     table_2.column(i).visible(true);
 });
-    table_2.ajax.url('/api/resultEdge').load();
     
 });

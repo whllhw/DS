@@ -266,6 +266,16 @@ def getResultEdge():
         "data":temp
         })
 
+@app.route('/api/clear')
+def clear():
+    cur.execute('Delete From nodes')
+    cur.execute('Delete From nodes2')
+    cur.execute('Delete From edges')
+    cur.execute('Delete From edges2')
+    db_connect.commit()
+    return '',204
+
+
 if __name__=='__main__':
 
     app.run()

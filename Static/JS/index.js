@@ -104,5 +104,22 @@ $('#showResult').click(function(e){
     table.column(1).visible(true);
     table.column(2).visible(true);
     table.ajax.url('/api/result').load();
+    table_2.ajax.url('/api/resultEdge').load(function(json){
+        draw();
+    });
+});
 
+$('#clear').click(function(e){
+    e.preventDefault();
+    $.get('/api/clear');
+    table.ajax.url('/api/nodes').load();
+    table.column(1).visible(false);
+    table.column(2).visible(false);
+    table_2.ajax.url('/api/edges').load(function(json){
+        removeNode();
+    });
+    [4,5,6,7,8,9,10].forEach(function(i){
+    table_2.column(i).visible(false);
+});
+    table_2.ajax.reload();
 });

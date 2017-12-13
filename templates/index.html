@@ -12,7 +12,7 @@
     <script src="{{ url_for('static',filename='JS/d3.v3.min.js') }}" charset="utf-8"></script>
     <script src="{{ url_for('static',filename='JS/dagre-d3.js') }}"></script>
     <script src="{{ url_for('static',filename='JS/jquery-3.2.1.min.js') }}"></script>
-    <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script>
+    <!-- <script src="{{ url_for('static',filename='JS/tipsy.js') }}"></script> -->
 
     <style id="css">
     text {
@@ -235,15 +235,18 @@
             </div>
             <div class="text-center">
                     <button type="button" class="btn btn-primary" id="showResult">显示结果</button>
+                    <button type="button" class="btn btn-primary" id="clear">
+                        清空结果
+                    </button>
             </div>
-
+            
         </div>
     </div>
 </div>
 
 <div  class="container">
         <div class="row clearfix">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12"  id="Show">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"  id="Show">
                 <svg id="My_Svg" class="My_Svg" style="background-color: ghostwhite"></svg>
             </div>
         </div>
