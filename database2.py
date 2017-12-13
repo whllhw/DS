@@ -119,6 +119,9 @@ def Invalid(Datas1):
     LenL = Links_np.shape[0]
     LenN = Nodes1_np.shape[0]
 
+    if LenL==0 or LenN==0:
+        return 6
+
     Links_C = np.zeros((LenL, 10))
     Nodes_C = np.zeros((LenN, 3))
 
@@ -133,7 +136,7 @@ def Invalid(Datas1):
     return flag
 
 def LetGo():
-    Init_Data()
+    #Init_Data()
     #Cal_ID2 = str(Cal_ID)
     #cur.execute('Select id From nodes Where Cal_ID=?',[Cal_ID])
     G_Cal_ID=0
