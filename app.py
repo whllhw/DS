@@ -93,7 +93,8 @@ def getNode():
         "draw":request.args['draw'],
         "recordsTotal":length,
         "recordsFiltered":length,
-        "data":temp})
+        "data":temp,
+        })
 
 @app.route('/api/nodes/<string:id>/',methods=['DELETE'])
 def removeNode(id):
@@ -190,7 +191,20 @@ def removeEdge(id):
 @app.route('/api/result')
 def getResult():
     import database2
-    message=database2.LetGo()
+    error = database2.LetGo()
+    errorInfo = {
+    1:'输入了重复的节点',
+    2:'输入了重复的边',
+    3:'多个起点',
+    4:'多个终点',
+    5:'图中存在环',
+    6:'用户无输入'
+    }
+    if error:
+        # 转跳页面
+        return jsonify({
+        "error":errorInfo[error]
+        })
 
     temp = []
     try:

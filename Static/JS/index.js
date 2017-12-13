@@ -101,12 +101,19 @@ $('#new').on('click', function (e) {
 
 $('#showResult').click(function(e){
     e.preventDefault();
-    table.column(1).visible(true);
-    table.column(2).visible(true);
-    table.ajax.url('/api/result').load();
-    table_2.ajax.url('/api/resultEdge').load(function(json){
-        draw();
+    $.get('/api/result').success(function(data){
+        if(data.error){
+            swal('错误',data.error,'error');
+            return;
+        }
+        table.column(1).visible(true);
+        table.column(2).visible(true);
+        table.ajax.url('/api/result').load();
+        table_2.ajax.url('/api/resultEdge').load(function(json){
+            draw(); // 画图
+        });
     });
+    
 });
 
 $('#clear').click(function(e){
@@ -119,7 +126,7 @@ $('#clear').click(function(e){
         removeNode();
     });
     [4,5,6,7,8,9,10].forEach(function(i){
-    table_2.column(i).visible(false);
-});
+        table_2.column(i).visible(false);
+    });
     table_2.ajax.reload();
 });
